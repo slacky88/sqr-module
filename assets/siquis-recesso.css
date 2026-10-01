@@ -1,0 +1,22 @@
+.siquis-recesso-footer {
+	position: relative;
+	z-index: 1;
+	clear: both;
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	padding: 12px;
+	text-align: center;
+	font-size: 14px;
+	line-height: 1.5;
+	color: inherit;
+}
+
+.siquis-recesso-footer a {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.siquis-recesso-order {
+	margin: 16px 0;
+}
