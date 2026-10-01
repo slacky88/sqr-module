@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Siquis Recesso per WooCommerce
  * Description:       Attiva e collega la funzione di recesso nativa di WooCommerce (art. 54-bis Codice del Consumo): link "Recedere dal contratto qui" sempre visibile e pulsante "Conferma recesso".
- * Version:           1.0.2
+ * Version:           1.0.3
  * Author:            Siquis
  * Requires at least: 6.0
  * Requires PHP:      7.4
@@ -18,7 +18,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'SIQUIS_RECESSO_VERSION', '1.0.2' );
+define( 'SIQUIS_RECESSO_VERSION', '1.0.3' );
 define( 'SIQUIS_RECESSO_FILE', __FILE__ );
 define( 'SIQUIS_RECESSO_DIR', plugin_dir_path( __FILE__ ) );
 define( 'SIQUIS_RECESSO_URL', plugin_dir_url( __FILE__ ) );
@@ -110,6 +110,8 @@ add_action(
 		}
 
 		require_once $lib;
+		require_once SIQUIS_RECESSO_DIR . 'includes/class-siquis-recesso-download.php';
+		Siquis_Recesso_Download::init( $repo );
 
 		if ( ! class_exists( '\YahnisElsts\PluginUpdateChecker\v5\PucFactory' ) ) {
 			return;

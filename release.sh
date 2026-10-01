@@ -20,6 +20,21 @@ git push origin "$TAG"
 
 TMP=$(mktemp -d)
 git archive --format=zip --prefix=siquis-recesso/ -o "$TMP/package.zip" "$TAG"
+
+# Copy of the package on the "dist" branch: lets sites download it from api.github.com
+# when their host blocks github.com / *.githubusercontent.com.
+git fetch -q origin dist:dist 2>/dev/null || true
+BLOB=$(git hash-object -w "$TMP/package.zip")
+TREE=$(printf '100644 blob %s	package.zip
+' "$BLOB" | git mktree)
+if git rev-parse -q --verify refs/heads/dist >/dev/null; then
+	DIST=$(git commit-tree "$TREE" -p dist -m "$TAG")
+else
+	DIST=$(git commit-tree "$TREE" -m "$TAG")
+fi
+git update-ref refs/heads/dist "$DIST"
+git push -q origin dist
+
 gh release create "$TAG" "$TMP/package.zip" --title "$TAG" --notes "$TAG"
 rm -rf "$TMP"
 echo "Pubblicata $TAG"
