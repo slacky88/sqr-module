@@ -20,6 +20,14 @@ class Siquis_Recesso_Links {
 	protected static $printed = array();
 
 	/**
+	 * Order IDs whose withdrawal action was handed to wc_get_account_orders_actions() on this request.
+	 * Since WC 10.9 order/order-details.php prints those actions in an "Actions" row.
+	 *
+	 * @var array
+	 */
+	protected static $in_actions = array();
+
+	/**
 	 * Register hooks.
 	 */
 	public static function init() {
@@ -214,6 +222,7 @@ class Siquis_Recesso_Links {
 				'url'  => $url,
 				'name' => self::get_label(),
 			);
+			self::$in_actions[ $order->get_id() ] = true;
 		}
 		return $actions;
 	}
@@ -234,7 +243,8 @@ class Siquis_Recesso_Links {
 			return;
 		}
 
-		if ( ! self::is_eligible( $order ) ) {
+		// The order details template already showed the button in its "Actions" row.
+		if ( ! self::is_eligible( $order ) || isset( self::$in_actions[ $order->get_id() ] ) ) {
 			return;
 		}
 		$url = Siquis_Recesso_Activator::get_withdrawal_url( $order );
